@@ -89,7 +89,8 @@
   },
   "3DTilesLayer": {
     "id": "3d-tiles-layer-building",
-    "url": "https://dataset-dl.liris.cnrs.fr/three-d-tiles-lyon-metropolis/Lyon_2015-gltf-repaired_TileSet/tileset.json",
+    "url_comment": "https://dataset-dl.liris.cnrs.fr/three-d-tiles-lyon-metropolis/Lyon_2015-gltf-repaired_TileSet/tileset.json",
+    "url": "./assets/Bron_2018/tileset.json",
     "color": "0xFFFFFF",
     "initTilesManager": "true"
   },
