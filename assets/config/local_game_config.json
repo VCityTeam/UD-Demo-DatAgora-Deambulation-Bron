@@ -1,0 +1,69 @@
+{
+  "assetsManager": {
+    "models": {
+      "avatar": {
+        "path": "./assets/models/avatar_capuchon.glb",
+        "anchor": "center_min"
+      }
+    },
+    "worldScripts": {
+      "avatar": {
+        "path": "./assets/worldScripts/avatar.js"
+      }
+    },
+    "localScripts": {
+      "focus": {
+        "path": "./assets/localScripts/focus.js"
+      },
+      "commands": {
+        "path": "./assets/localScripts/commands.js"
+      },
+      "updateElevationGround": {
+        "path": "./assets/localScripts/updateElevationGround.js"
+      }
+    }
+  },
+  "game": {
+    "fps": 30,
+    "shadowMapSize": 2046,
+    "skyColor": {
+      "r": 0.4,
+      "g": 0.6,
+      "b": 0.8
+    },
+    "sky": {
+      "path": "./assets/img/sky.jpg"
+    }
+  },
+  "itowns": {
+    "radiusExtent": 1000,
+    "camera": {
+      "range": 3000,
+      "heading": -50,
+      "tilt": 10
+    }
+  },
+  "3DTilesLayers": [
+    {
+      "id": "3d-tiles-layer-building",
+      "url": "./assets/3DTiles/buildings/tileset.json",
+      "color": "0xFFFFFF"
+    },
+    {
+      "id": "3d-tiles-layer-relief",
+      "url": "./assets/3DTiles/relief/tileset.json",
+      "color": "0xd0ac7f"
+    },
+    {
+      "id": "3d-tiles-layer-road",
+      "url": "./assets/3DTiles/roads/tileset.json",
+      "color": "0x272727"
+    },
+    {
+      "id": "3d-tiles-layer-water",
+      "url": "./assets/3DTiles/water/tileset.json",
+      "color": "0x2ACAEA"
+    }
+  ],
+  "projection": "EPSG:3946"
+}
