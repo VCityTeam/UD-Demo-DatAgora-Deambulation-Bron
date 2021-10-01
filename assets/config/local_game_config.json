@@ -36,7 +36,7 @@
     }
   },
   "itowns": {
-    "radiusExtent": 1000,
+    "radiusExtent": 10000,
     "camera": {
       "range": 3000,
       "heading": -50,
@@ -46,7 +46,8 @@
   "3DTilesLayers": [
     {
       "id": "3d-tiles-layer-building",
-      "url": "./assets/3DTiles/buildings/tileset.json",
+      "other_url": "./assets/3DTiles/buildings/tileset.json",
+      "url": "./assets/Bron_2018/tileset.json",
       "color": "0xFFFFFF"
     },
     {

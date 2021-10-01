@@ -17,38 +17,108 @@ module.exports = class Focus {
       new Shared.THREE.Euler(-this.conf.cameraAngle, 0, 0)
     );
 
-    //initial distance of the camera with the zeppelin
+    //initial distance of the camera with the subject
     this.distance = this.conf.minDist;
+
+    //raycaster for picking/warp of avatar
+    this.raycaster = new Shared.THREE.Raycaster();
+    this.useItownsCamera = false;
+    this.mousePosition = new Shared.THREE.Vector2();
   }
 
-  init() {
-    const _this = this;
+  swapCameraMode(iView)
+  {
+    this.useItownsCamera = !this.useItownsCamera;
 
-    const localContext = arguments[1];
-    const gV = localContext.getGameView();
-    const manager = gV.getInputManager();
-    manager.addMouseInput(gV.html(), 'wheel', function (event) {
-      _this.distance += event.wheelDelta * 0.1;
-      _this.distance = Math.max(
-        Math.min(_this.distance, _this.conf.maxDist),
-        _this.conf.minDist
+    if(this.useItownsCamera)
+    {
+      //creating controls like put it in _this.view.controls
+      this.c = new udviz.itowns.PlanarControls(iView, {
+        handleCollision: false,
+        focusOnMouseOver: false, //TODO itowns bug not working
+        focusOnMouseClick: false,
+      });
+      return;
+    }
+
+    this.c.dispose();
+  }
+  init() {
+    //const localCtx = arguments[1];
+    const gV = arguments[1].getGameView();
+    const iView = gV.getItownsView();
+    const iCamera = iView.camera.camera3D;
+
+    const inputManager = gV.getInputManager();
+    const tilesManager = gV.getLayerManager().tilesManagers;
+
+    const addObjectToGround = function (ground, nameLayer) {
+      let layerManager = null;
+      for (let index = 0; index < tilesManager.length; index++) {
+        const element = tilesManager[index];
+        if (element.layer.id == nameLayer) {
+          layerManager = element;
+          break;
+        }
+      }
+
+      if (!layerManager) throw new Error('no ', nameLayer);
+
+      layerManager.tiles.forEach(function (t) {
+        const obj = t.getObject3D();
+        if (obj) ground.push(obj);
+      });
+    };
+
+    const thisFocus = this;
+    inputManager.addKeyInput('c', "keydown", function (event) {
+      //debugger
+      thisFocus.swapCameraMode(iView);
+    })
+    inputManager.addMouseCommand('mousedown', function () {
+      //TODO: warp only at pure left click
+      //if(inputManager.mouseState.isDragging())
+      //  return;
+
+      const event = this.event('mousedown');
+      const mousePosition = thisFocus.mousePosition;
+      mousePosition.set(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
       );
-      gV.computeNearFarCamera();
+      thisFocus.raycaster.setFromCamera(mousePosition, iCamera);
+      
+      const ground = []
+      addObjectToGround(ground, '3d-tiles-layer-relief');
+      addObjectToGround(ground, '3d-tiles-layer-road');
+      const intersects = thisFocus.raycaster.intersectObjects(ground, true);
+      if(intersects.length > 0) {
+        return new Shared.Command({
+          type: Shared.Command.TYPE.MOVE_TO,
+          data: {
+            vector: intersects[0].point.sub( gV.getObject3D().position),
+          },
+        });
+      }
+      return null;
     });
   }
 
   tick() {
+    if(this.useItownsCamera)
+      return;
+    
     //the gameobject parent of this script
     const go = arguments[0];
 
     //a context containing all data to script clientside script
     const localContext = arguments[1];
 
-    //get the zeppelin gameobject by name
-    const zeppelin = go.computeRoot().findByName(this.conf.nameGO2Focus);
+    //get the subject gameobject by name
+    const subject = go.computeRoot().findByName(this.conf.nameGO2Focus);
 
     //compute world transform
-    const obj = zeppelin.computeObject3D();
+    const obj = subject.computeObject3D();
     let position = new Shared.THREE.Vector3();
     let quaternion = new Shared.THREE.Quaternion();
     obj.matrixWorld.decompose(position, quaternion, new Shared.THREE.Vector3());
@@ -57,7 +127,7 @@ module.exports = class Focus {
     position.z += this.conf.offsetZ;
 
     //compute camera position
-    const dir = zeppelin
+    const dir = subject
       .getDefaultForward()
       .applyQuaternion(this.quaternionAngle)
       .applyQuaternion(quaternion);

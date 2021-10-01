@@ -1,5 +1,8 @@
 /** @format */
 
+// const AVATAR_SPEED_ROTATION_Z = 0.00004;
+// const AVATAR_SPEED_ROTATION_X = 0.00004;
+
 let Shared;
 
 module.exports = class Avatar {
@@ -61,6 +64,19 @@ module.exports = class Avatar {
             new Shared.THREE.Vector3(currentPos.x, currentPos.y, z)
           );
           break;
+        case Shared.Command.TYPE.MOVE_TO:
+          avatar.setPosition(cmd.getData()['vector']);
+          break;
+        // case Shared.Command.TYPE.ROTATE:
+        //   const vectorJSON = cmd.getData().vector;
+        //   const vector = new Shared.THREE.Vector3(
+        //     vectorJSON.x * AVATAR_SPEED_ROTATION_X,
+        //     vectorJSON.y,
+        //     vectorJSON.z * AVATAR_SPEED_ROTATION_Z
+        //   );
+        //   avatar.rotate(vector.multiplyScalar(dt));
+        //   //this.clampRotation(avatar);
+        //   break;
         default:
           throw new Error('command not handle ', cmd.getType());
       }

@@ -51,6 +51,16 @@ module.exports = class Commands {
         return new Shared.Command({ type: Shared.Command.TYPE.MOVE_RIGHT });
       }
     );
+
+
+    // //MOVE_TO
+    // inputManager.addKeyCommand(
+    //   Shared.Command.TYPE.MOVE_TO,
+    //   ['m'],
+    //   function () {
+    //     return new Shared.Command({ type: Shared.Command.TYPE.MOVE_TO });
+    //   }
+    // );
   }
 
   tick() {
