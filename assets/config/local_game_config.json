@@ -52,7 +52,8 @@
     },
     {
       "id": "3d-tiles-layer-relief",
-      "url": "./assets/3DTiles/relief/tileset.json",
+      "other_url": "./assets/3DTiles/relief/tileset.json",
+      "url": "./assets/Bron_relief/tileset.json",
       "color": "0xd0ac7f"
     },
     {

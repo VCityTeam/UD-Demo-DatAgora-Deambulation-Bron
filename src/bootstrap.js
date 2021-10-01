@@ -1,4 +1,4 @@
-import { Game, Templates, THREE } from "ud-viz";
+import { Game, Templates } from 'ud-viz';
 
 const myWorld = new Game.Shared.World({
   name: 'My World',

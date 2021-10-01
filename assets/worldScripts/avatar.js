@@ -57,6 +57,7 @@ module.exports = class Avatar {
           avatar.rotate(new Shared.THREE.Vector3(0, 0, -speedRotate * dt));
           break;
         case Shared.Command.TYPE.Z_UPDATE:
+        {
           const z = cmd.getData();
           if (!z) break;
           const currentPos = avatar.getPosition();
@@ -64,6 +65,7 @@ module.exports = class Avatar {
             new Shared.THREE.Vector3(currentPos.x, currentPos.y, z)
           );
           break;
+        }
         case Shared.Command.TYPE.MOVE_TO:
           avatar.setPosition(cmd.getData()['vector']);
           break;

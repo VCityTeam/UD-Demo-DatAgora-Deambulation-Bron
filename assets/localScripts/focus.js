@@ -71,10 +71,10 @@ module.exports = class Focus {
     };
 
     const thisFocus = this;
-    inputManager.addKeyInput('c', "keydown", function (event) {
+    inputManager.addKeyInput('c', 'keydown', function () {
       //debugger
       thisFocus.swapCameraMode(iView);
-    })
+    });
     inputManager.addMouseCommand('mousedown', function () {
       //TODO: warp only at pure left click
       //if(inputManager.mouseState.isDragging())
@@ -88,7 +88,7 @@ module.exports = class Focus {
       );
       thisFocus.raycaster.setFromCamera(mousePosition, iCamera);
       
-      const ground = []
+      const ground = [];
       addObjectToGround(ground, '3d-tiles-layer-relief');
       addObjectToGround(ground, '3d-tiles-layer-road');
       const intersects = thisFocus.raycaster.intersectObjects(ground, true);

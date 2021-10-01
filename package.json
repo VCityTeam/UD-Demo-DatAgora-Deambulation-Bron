@@ -5,7 +5,7 @@
   "main": "./src/bootstrap.js",
   "scripts": {
     "travis": "npm run eslint && npm run build",
-    "eslint": "./node_modules/.bin/eslint ./src",
+    "eslint": "./node_modules/.bin/eslint ./src ./assets/localScripts ./assets/worldScripts",
     "eslint-fix": "./node_modules/.bin/eslint ./src --fix",
     "build": "cross-env NODE_ENV=production webpack",
     "build-debug": "cross-env NODE_ENV=development webpack",

@@ -13,10 +13,10 @@ module.exports = class UpdateElevationGround {
   }
 
   init() {
-    const _this = this;
+    //const _this = this;
 
-    const localContext = arguments[1];
-    const gV = localContext.getGameView();
+    //const localContext = arguments[1];
+    //const gV = localContext.getGameView();
   }
 
   tick() {
