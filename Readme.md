@@ -1,16 +1,4 @@
-# A template application of the UD-Viz package
-
-This repository holds a template (demonstration) application of the [UD-Viz](https://github.com/VCityTeam/UD-Viz)
-JavaScript package. The goel of this template application is to
-
-- illustrate the main features of [UD-Viz](https://github.com/VCityTeam/UD-Viz),
-- provide code that demonstrates how such features can be configured/extended/embeded
-  and eventually combined/integrated within a full autonomous application,
-- illustrate the JavaScript ecosystem required for building and running it,
-- be used as a template for creating/declining your own application.
-
-Because thhis template application is fully functionnal maybe the simplest way to
-understand what it does is to build it and run it.
+# A demo of human scale deambulation in a digital city
 
 ## Pre-requisites for installing the template application
 
