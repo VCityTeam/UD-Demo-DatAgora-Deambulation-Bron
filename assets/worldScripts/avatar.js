@@ -1,7 +1,5 @@
 /** @format */
 
-// const AVATAR_SPEED_ROTATION_Z = 0.00004;
-// const AVATAR_SPEED_ROTATION_X = 0.00004;
 
 let Shared;
 
@@ -11,6 +9,10 @@ module.exports = class Avatar {
     Shared = SharedModule;
 
     this.avatar = null;
+    //infos for movements
+    this.lastPosition = new Shared.THREE.Vector3();
+    this.lastDirection = new Shared.THREE.Vector3();
+    this.remainingDistance = Infinity;
   }
 
   init() {
@@ -38,18 +40,46 @@ module.exports = class Avatar {
     const speedTranslate = 0.03;
     const speedRotate = 0.0006;
     const avatar = this.avatar;
+
+    const thisCommands = this;
     commands.forEach(function (cmd) {
       switch (cmd.getType()) {
         case Shared.Command.TYPE.MOVE_FORWARD:
-          avatar.move(
-            avatar.computeForwardVector().setLength(dt * speedTranslate)
-          );
+        {
+          let data = cmd.getData();
+          //debugger
+          //if(!data['position'].equals(avatar.getPosition()) /*|| !data['position'].equals(thisCommands.lastPosition)*/)
+          //  break;
+
+          if(!data['position'].equals(thisCommands.lastPosition) || !data['direction'].equals(thisCommands.lastDirection))
+          {
+            thisCommands.lastPosition.copy(data['position']);
+            thisCommands.lastDirection.copy(data['direction']);
+            thisCommands.remainingDistance = data['buildingsDepth'];
+            //console.log(thisCommands.remainingDistance);
+
+            if(thisCommands.remainingDistance < 15 && !data['position'].equals(avatar.getPosition()))
+              break;
+          }
+
+          const length = dt * speedTranslate;
+          if(length > thisCommands.remainingDistance)
+            break;
+          
+          avatar.move(data['direction'].setLength(length));
+          thisCommands.remainingDistance -= length;
           break;
+        }
         case Shared.Command.TYPE.MOVE_BACKWARD:
-          avatar.move(
-            avatar.computeBackwardVector().setLength(dt * speedTranslate)
-          );
+        {
+          const length = dt * speedTranslate;
+          // if(cmd.getData()['buildingsDepth'] <= length)
+          //   break;
+          
+          const direction = avatar.computeBackwardVector();
+          avatar.move(direction.setLength(length));
           break;
+        }
         case Shared.Command.TYPE.MOVE_LEFT:
           avatar.rotate(new Shared.THREE.Vector3(0, 0, speedRotate * dt));
           break;
@@ -69,18 +99,8 @@ module.exports = class Avatar {
         case Shared.Command.TYPE.MOVE_TO:
           avatar.setPosition(cmd.getData()['vector']);
           break;
-        // case Shared.Command.TYPE.ROTATE:
-        //   const vectorJSON = cmd.getData().vector;
-        //   const vector = new Shared.THREE.Vector3(
-        //     vectorJSON.x * AVATAR_SPEED_ROTATION_X,
-        //     vectorJSON.y,
-        //     vectorJSON.z * AVATAR_SPEED_ROTATION_Z
-        //   );
-        //   avatar.rotate(vector.multiplyScalar(dt));
-        //   //this.clampRotation(avatar);
-        //   break;
         default:
-          throw new Error('command not handle ', cmd.getType());
+          throw new Error('command not handled ', cmd.getType());
       }
     });
   }

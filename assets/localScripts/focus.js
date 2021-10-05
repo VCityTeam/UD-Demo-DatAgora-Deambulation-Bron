@@ -52,7 +52,9 @@ module.exports = class Focus {
     const inputManager = gV.getInputManager();
     const tilesManager = gV.getLayerManager().tilesManagers;
 
-    const addObjectToGround = function (ground, nameLayer) {
+    //TODO: do this at loads/unloads objects with events watchers instead of every tick
+    //TODO: mutualize this between this, `updateElevationGround`, and `commands` local scripts
+    const addObjectToArray = function (array, nameLayer) {
       let layerManager = null;
       for (let index = 0; index < tilesManager.length; index++) {
         const element = tilesManager[index];
@@ -66,7 +68,7 @@ module.exports = class Focus {
 
       layerManager.tiles.forEach(function (t) {
         const obj = t.getObject3D();
-        if (obj) ground.push(obj);
+        if (obj) array.push(obj);
       });
     };
 
@@ -89,8 +91,8 @@ module.exports = class Focus {
       thisFocus.raycaster.setFromCamera(mousePosition, iCamera);
       
       const ground = [];
-      addObjectToGround(ground, '3d-tiles-layer-relief');
-      addObjectToGround(ground, '3d-tiles-layer-road');
+      addObjectToArray(ground, '3d-tiles-layer-relief');
+      addObjectToArray(ground, '3d-tiles-layer-road');
       const intersects = thisFocus.raycaster.intersectObjects(ground, true);
       if(intersects.length > 0) {
         return new Shared.Command({
