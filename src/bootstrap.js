@@ -18,9 +18,9 @@ const myWorld = new Game.Shared.World({
           minDist: 5,
           maxDist: 20,
         },
-        idScripts: ['updateElevationGround', 'focus', 'commands'],
+        idScripts: ['focus', 'localAvatar'],
       },
-    },
+    }, 
   },
 });
 

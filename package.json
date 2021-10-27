@@ -5,7 +5,7 @@
   "main": "./src/bootstrap.js",
   "scripts": {
     "travis": "npm run eslint && npm run build",
-    "eslint": "./node_modules/.bin/eslint ./src ./assets/localScripts ./assets/worldScripts",
+    "eslint": "./node_modules/.bin/eslint ./src",
     "eslint-fix": "./node_modules/.bin/eslint ./src --fix",
     "build": "cross-env NODE_ENV=production webpack",
     "build-debug": "cross-env NODE_ENV=development webpack",
@@ -17,7 +17,7 @@
     "@egjs/hammerjs": "^2.0.17",
     "keycharm": "^0.4.0",
     "timsort": "^0.3.0",
-    "ud-viz": "^2.33.1",
+    "ud-viz": "file:///home/webanck/repositories/UD-Viz",
     "uuid": "^8.3.2",
     "vis-util": "^5.0.2"
   },

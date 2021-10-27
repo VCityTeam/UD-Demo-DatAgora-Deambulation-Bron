@@ -77,12 +77,14 @@ module.exports = class Focus {
       //debugger
       thisFocus.swapCameraMode(iView);
     });
-    inputManager.addMouseCommand('mousedown', function () {
+    const avatar = arguments[0].computeRoot().findByName('avatar');
+    if(!avatar) return;
+    inputManager.addMouseInput(gV.html(), 'mousedown', function (event) {
+      //TODO: warp only on visible terrain, not when first intersection is a building
       //TODO: warp only at pure left click
       //if(inputManager.mouseState.isDragging())
       //  return;
 
-      const event = this.event('mousedown');
       const mousePosition = thisFocus.mousePosition;
       mousePosition.set(
         (event.clientX / window.innerWidth) * 2 - 1,
@@ -94,15 +96,8 @@ module.exports = class Focus {
       addObjectToArray(ground, '3d-tiles-layer-relief');
       addObjectToArray(ground, '3d-tiles-layer-road');
       const intersects = thisFocus.raycaster.intersectObjects(ground, true);
-      if(intersects.length > 0) {
-        return new Shared.Command({
-          type: Shared.Command.TYPE.MOVE_TO,
-          data: {
-            vector: intersects[0].point.sub( gV.getObject3D().position),
-          },
-        });
-      }
-      return null;
+      if(intersects.length > 0)
+        avatar.setPosition(intersects[0].point.sub( gV.getObject3D().position));
     });
   }
 

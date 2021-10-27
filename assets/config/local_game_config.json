@@ -15,11 +15,8 @@
       "focus": {
         "path": "./assets/localScripts/focus.js"
       },
-      "commands": {
-        "path": "./assets/localScripts/commands.js"
-      },
-      "updateElevationGround": {
-        "path": "./assets/localScripts/updateElevationGround.js"
+      "localAvatar": {
+        "path": "./assets/localScripts/avatar.js"
       }
     }
   },
