@@ -4,6 +4,19 @@
       "avatar": {
         "path": "./assets/models/avatar_capuchon.glb",
         "anchor": "center_min"
+      },
+      "campus_Yael": {
+        "path_": "./assets/models/BRON_Nov_15.glb",
+        "path__": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/exportShifted_BRON_Nov_17.glb",
+        "path": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/simpler.glb",
+        "path_gizmo": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb.glb",
+        "path_gizmo2": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb_Yup.glb",
+        "static": true
+      },
+      "campus_raw": {
+        "path": "./assets/models/Bron_raw.glb",
+        "anchor": "min",
+        "static": true
       }
     },
     "worldScripts": {
@@ -40,29 +53,6 @@
       "tilt": 10
     }
   },
-  "3DTilesLayers": [
-    {
-      "id": "3d-tiles-layer-building",
-      "other_url": "./assets/3DTiles/buildings/tileset.json",
-      "url": "./assets/Bron_2018/tileset.json",
-      "color": "0xFFFFFF"
-    },
-    {
-      "id": "3d-tiles-layer-relief",
-      "other_url": "./assets/3DTiles/relief/tileset.json",
-      "url": "./assets/Bron_relief/tileset.json",
-      "color": "0xd0ac7f"
-    },
-    {
-      "id": "3d-tiles-layer-road",
-      "url": "./assets/3DTiles/roads/tileset.json",
-      "color": "0x272727"
-    },
-    {
-      "id": "3d-tiles-layer-water",
-      "url": "./assets/3DTiles/water/tileset.json",
-      "color": "0x2ACAEA"
-    }
-  ],
+  "3DTilesLayers": [],
   "projection": "EPSG:3946"
 }
