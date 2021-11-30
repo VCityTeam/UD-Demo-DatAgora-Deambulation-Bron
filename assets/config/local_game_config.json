@@ -55,12 +55,7 @@
     }
   },
   "3DTilesLayers": [
-    {
-      "id": "3d-tiles-layer-relief",
-      "other_url": "./assets/3DTiles/relief/tileset.json",
-      "url": "./assets/Bron_relief/tileset.json",
-      "color": "0xd0ac7f"
-    }
+
   ],
   "projection": "EPSG:3946"
 }

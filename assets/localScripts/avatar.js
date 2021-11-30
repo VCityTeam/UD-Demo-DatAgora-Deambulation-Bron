@@ -15,12 +15,13 @@ module.exports = class LocalAvatar {
     this.localAvatar = null;
     this.intersectionCube = null;
     this.inputManager = null;
+    this.campus = null;
 
     //raycaster for avoiding buildings collisions with avatar
     this.raycaster = new Shared.THREE.Raycaster();
   }
 
-  addObjectToArray(array, tilesManager, layerName) {
+  addTileLayerToArray(array, tilesManager, layerName) {
     let layerManager = null;
     //console.log(tilesManager);
     for (let index = 0; index < tilesManager.length; index++) {
@@ -42,8 +43,8 @@ module.exports = class LocalAvatar {
     // const gV = localContext.getGameView();
 
     // const tilesManager = gV.getLayerManager().tilesManagers;
-    const buildings = [];
-    // this.addObjectToArray(buildings, tilesManager, '3d-tiles-layer-building');
+    const buildings = [this.campus];
+    // this.addTileLayerToArray(buildings, tilesManager, '3d-tiles-layer-building');
 
     // const pos = this.avatar.getPosition();
     // const ref = localContext.getGameView().getObject3D().position;
@@ -73,16 +74,52 @@ module.exports = class LocalAvatar {
     // return minDist;
   }
   groundElevationDelta(tilesManager, origin) {
-    const ground = [];
-    this.addObjectToArray(ground, tilesManager, '3d-tiles-layer-relief');
-    //this.addObjectToArray(ground, tilesManager, '3d-tiles-layer-road');
+    const ground = [this.campus];
+    //this.addTileLayerToArray(ground, tilesManager, '3d-tiles-layer-relief');
+    //this.addTileLayerToArray(ground, tilesManager, '3d-tiles-layer-road');
 
-    const zShift = 500;
-    this.raycaster.ray.origin.set(origin.x, origin.y, origin.z + zShift);
+    const acceptableDelta = 2;
+    const avatarSize = 1.7;
+
+    var delta;
+    const deltas = [];
     this.raycaster.ray.direction.set(0, 0, -1);
+    var zShift;
 
-    const intersections = this.raycaster.intersectObjects(ground, true);
-    return (intersections.length ? intersections[0].distance - zShift : null);
+    //Down
+    zShift = 0.;
+    this.raycaster.ray.origin.set(origin.x, origin.y, origin.z + zShift);
+    const intersectionsDown = this.raycaster.intersectObjects(ground, true);
+    if(intersectionsDown.length)
+    {
+      delta = -(intersectionsDown[0].distance - zShift);
+      if(Math.abs(delta) < acceptableDelta)
+        deltas.push(delta);
+    }
+    //Up
+    zShift = avatarSize;
+    this.raycaster.ray.origin.set(origin.x, origin.y, origin.z + zShift);
+    const intersectionsUp = this.raycaster.intersectObjects(ground, true);
+    if(intersectionsUp.length)
+    {
+      delta = -(intersectionsUp[0].distance - zShift);
+      if(Math.abs(delta) < acceptableDelta)
+        deltas.push(delta);
+    }
+
+    console.log("deltas", deltas);
+
+    if(deltas.length == 2 && deltas[1] - deltas[0] < avatarSize)
+      return deltas[1];
+    
+    var delta = null;
+    deltas.forEach(function (d) {
+      if(!delta || Math.abs(d) < delta) delta = d;
+    });
+    console.log("delta", delta);
+    return delta;
+
+    //return (intersections.length ? intersections[0].distance - zShift : null);
   }
 
   init() {
@@ -151,11 +188,11 @@ module.exports = class LocalAvatar {
 
 
 
-    const campus = gV.assetsManager.createModel('campus_Yael');
-    campus.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -0.5*Math.PI);
-    campus.position.set(1849223.44, 5170874.5625, 194.8617);
-    console.log("campus", campus);
-    scene.add(campus);
+    this.campus = gV.assetsManager.createModel('campus_Yael');
+    this.campus.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -0.5*Math.PI);
+    this.campus.position.set(1849223.44, 5170874.5625, 194.8617);
+    console.log("campus", this.campus);
+    scene.add(this.campus);
 
     const dt = localContext.getDt();
     const translationSpeed = 0.05;
@@ -163,6 +200,8 @@ module.exports = class LocalAvatar {
     const speedRotate = 0.0012;
 
     const checkCollisionFun = function(direction) {
+      return false;
+
       const origin = avatar.getPosition().clone().add(worldOrigin);
       const intersection = this.buildingsHit(tilesManager, origin, direction);
       const depth = intersection ? intersection.distance : Infinity;
@@ -184,7 +223,7 @@ module.exports = class LocalAvatar {
     const updateGroundElevationFun = function() {
       const zDelta = this.groundElevationDelta(tilesManager, avatar.getPosition().clone().add(worldOrigin));
       if(!zDelta) return;
-      avatar.move(new Shared.THREE.Vector3(0, 0, -zDelta));
+      avatar.move(new Shared.THREE.Vector3(0, 0, zDelta));
     }.bind(this);
 
     
