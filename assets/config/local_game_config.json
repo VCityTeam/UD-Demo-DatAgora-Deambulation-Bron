@@ -8,7 +8,8 @@
       "campus_Yael": {
         "path_": "./assets/models/BRON_Nov_15.glb",
         "path__": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/exportShifted_BRON_Nov_17.glb",
-        "path": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/simpler.glb",
+        "path_good": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/simpler.glb",
+        "path": "./assets/obj_tilesets/BRON_Nov_29.glb",
         "path_gizmo": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb.glb",
         "path_gizmo2": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb_Yup.glb",
         "static": true
@@ -53,6 +54,13 @@
       "tilt": 10
     }
   },
-  "3DTilesLayers": [],
+  "3DTilesLayers": [
+    {
+      "id": "3d-tiles-layer-relief",
+      "other_url": "./assets/3DTiles/relief/tileset.json",
+      "url": "./assets/Bron_relief/tileset.json",
+      "color": "0xd0ac7f"
+    }
+  ],
   "projection": "EPSG:3946"
 }

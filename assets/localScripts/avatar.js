@@ -43,7 +43,7 @@ module.exports = class LocalAvatar {
 
     // const tilesManager = gV.getLayerManager().tilesManagers;
     const buildings = [];
-    //this.addObjectToArray(buildings, tilesManager, '3d-tiles-layer-building');
+    // this.addObjectToArray(buildings, tilesManager, '3d-tiles-layer-building');
 
     // const pos = this.avatar.getPosition();
     // const ref = localContext.getGameView().getObject3D().position;
@@ -74,7 +74,7 @@ module.exports = class LocalAvatar {
   }
   groundElevationDelta(tilesManager, origin) {
     const ground = [];
-    //this.addObjectToArray(ground, tilesManager, '3d-tiles-layer-relief');
+    this.addObjectToArray(ground, tilesManager, '3d-tiles-layer-relief');
     //this.addObjectToArray(ground, tilesManager, '3d-tiles-layer-road');
 
     const zShift = 500;
@@ -152,61 +152,10 @@ module.exports = class LocalAvatar {
 
 
     const campus = gV.assetsManager.createModel('campus_Yael');
-    //campus.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -1*Math.PI);
     campus.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -0.5*Math.PI);
-    //campus.position.set(
-    //  1849073.9812757724,
-    //  5170899.853254461,
-    //  189.97654942595022
-    //);
+    campus.position.set(1849223.44, 5170874.5625, 194.8617);
     console.log("campus", campus);
     scene.add(campus);
-    //const campusY = arguments[0].computeRoot().findByName('campusY');
-    //campusY.move(-gV.getObject3D().position);
-    //*/
-
-
-    //Campus
-    //const campusY = new Shared.GameObject({
-    //  name: 'campusY',
-    //  components: {
-    //    Render: { idModel: 'campus_Yael' },
-    //    LocalScript: {
-    //      idScripts: [],
-    //    },
-    //  },
-    //});
-    //campusY.object3D.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -1*Math.PI);
-    //scene.add(campusY.object3D);
-
-
-    //Not working test done with CCO
-    /*
-    // Create a GeometryLayer
-    const campusY = new Shared.GameObject({
-      name: 'campusY',
-      components: {
-        Render: { idModel: 'campus_Yael' },
-        LocalScript: {
-          idScripts: [],
-        },
-      },
-    });
-    campusY.object3D.scale.multiply(new Shared.THREE.Vector3(-1, -1, 1));
-    campusY.setOutdated(true);
-    //const source = new udviz.itowns.FileSource({
-    //  crs: 'EPSG:4326',
-    //  features: campusY.object3D
-    //});
-    const source = new itowns.FileSource({
-      url: "./assets/models/BRON_Nov_15.glb",
-      crs: 'EPSG:4326',
-      fetcher: itowns.Fetcher.xml,
-      parser: itowns.KMLParser.parse,
-    });
-    const layer = new udviz.itowns.GeometryLayer('campus_layer', new Shared.THREE.Object3D(), { source: source });
-    gV.itownsView.addLayer(layer);
-    //*/
 
     const dt = localContext.getDt();
     const translationSpeed = 0.05;
