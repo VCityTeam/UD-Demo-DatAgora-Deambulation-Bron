@@ -58,20 +58,6 @@ module.exports = class LocalAvatar {
     const intersections = this.raycaster.intersectObjects(buildings, true);
     if(intersections.length) return intersections[0];
     return null;
-    //if(!intersections.length) debugger;
-    //return intersections.length ? intersections[0] : Infinity;
-    // let minDist = Infinity;
-    // if (intersections.length) {
-    //   //debugger
-    //   intersections.forEach(function (i) {
-    //     if (i.distance < minDist) {
-    //       //z = -i.distance;
-    //       minDist = i.distance;
-    //     }
-    //   });
-    // }
-
-    // return minDist;
   }
   groundElevationDelta(tilesManager, origin) {
     const ground = [this.campus];
@@ -118,8 +104,6 @@ module.exports = class LocalAvatar {
     });
     console.log("delta", delta);
     return delta;
-
-    //return (intersections.length ? intersections[0].distance - zShift : null);
   }
 
   init() {
@@ -199,11 +183,35 @@ module.exports = class LocalAvatar {
     const translationLength = translationSpeed * dt;
     const speedRotate = 0.0012;
 
-    const checkCollisionFun = function(direction) {
-      return false;
-
+    //Check if movement is possible according to :
+    //- altitude delta and size of avatar
+    //- presence of surface for the avatar
+    //- intersections
+    const checkAndApplyMovementFun = function(direction, length) {
       const origin = avatar.getPosition().clone().add(worldOrigin);
-      const intersection = this.buildingsHit(tilesManager, origin, direction);
+      //console.log(direction, length);
+      const hShift = direction.clone().multiplyScalar(length);
+      //console.log("hShift", hShift);
+      const hShiftedOrigin = origin.clone().add(hShift);
+      const groundDelta = this.groundElevationDelta(tilesManager, hShiftedOrigin);
+
+      const navelZ = 0.5;
+      const navelOrigin = origin.clone();
+      navelOrigin.z += navelZ;
+
+      //In absence of surface, just cancel movement (except if already flying).
+      if(groundDelta == null)
+      {
+        const intersection = this.buildingsHit(tilesManager, navelOrigin, new Shared.THREE.Vector3(0, 0, -1));
+        console.log("flying intersection", intersection);
+        if(intersection != null) return;
+      }
+
+      //Move a little bit the intersection test origin (near navel) to avoid foots level intersections.
+      const shift = hShift.clone();
+      shift.z += groundDelta;
+      const tiltedDirection = shift.clone().normalize();
+      const intersection = this.buildingsHit(tilesManager, navelOrigin, tiltedDirection);
       const depth = intersection ? intersection.distance : Infinity;
   
       if(depth != Infinity)
@@ -216,14 +224,11 @@ module.exports = class LocalAvatar {
         this.intersectionCube.visibility = false;
       }
   
-      //debugger
-      // console.log(depth);
-      return translationLength > depth;
-    }.bind(this);
-    const updateGroundElevationFun = function() {
-      const zDelta = this.groundElevationDelta(tilesManager, avatar.getPosition().clone().add(worldOrigin));
-      if(!zDelta) return;
-      avatar.move(new Shared.THREE.Vector3(0, 0, zDelta));
+      //In case of intersection between origin and shifted positions, just cancel movement.
+      if(depth < shift.length()) return;
+      
+      //Apply movement.
+      this.avatar.move(shift);
     }.bind(this);
 
     
@@ -238,18 +243,13 @@ module.exports = class LocalAvatar {
       dtcb = Date.now();
 
       const direction = avatar.computeForwardVector();
-      if(checkCollisionFun(direction)) return;
-      avatar.move(direction.setLength(translationLength));
-      updateGroundElevationFun();
-      //onsole.log('z');
-      return
+      checkAndApplyMovementFun(direction, translationLength);
+      //console.log('z');
     });
     //BACKWARD
     inputManager.addKeyInput('s', 'keydown', function () {
       const direction = avatar.computeBackwardVector();
-      if(checkCollisionFun(direction)) return;
-      avatar.move(direction.setLength(translationLength));
-      updateGroundElevationFun();
+      checkAndApplyMovementFun(direction, translationLength);
       //console.log('s');
     });
     //LEFT
