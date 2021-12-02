@@ -19,6 +19,9 @@ module.exports = class LocalAvatar {
 
     //raycaster for avoiding buildings collisions with avatar
     this.raycaster = new Shared.THREE.Raycaster();
+    this.acceptableSlope = 0.5;
+    this.avatarSize = 1.7;
+    this.navelZ = 0.85;
   }
 
   addTileLayerToArray(array, tilesManager, layerName) {
@@ -59,13 +62,10 @@ module.exports = class LocalAvatar {
     if(intersections.length) return intersections[0];
     return null;
   }
-  groundElevationDelta(tilesManager, origin) {
+  groundElevationDelta(tilesManager, origin, acceptableDelta) {
     const ground = [this.campus];
     //this.addTileLayerToArray(ground, tilesManager, '3d-tiles-layer-relief');
     //this.addTileLayerToArray(ground, tilesManager, '3d-tiles-layer-road');
-
-    const acceptableDelta = 2;
-    const avatarSize = 1.7;
 
     var delta;
     const deltas = [];
@@ -83,7 +83,7 @@ module.exports = class LocalAvatar {
         deltas.push(delta);
     }
     //Up
-    zShift = avatarSize;
+    zShift = this.avatarSize;
     this.raycaster.ray.origin.set(origin.x, origin.y, origin.z + zShift);
     const intersectionsUp = this.raycaster.intersectObjects(ground, true);
     if(intersectionsUp.length)
@@ -93,16 +93,16 @@ module.exports = class LocalAvatar {
         deltas.push(delta);
     }
 
-    console.log("deltas", deltas);
+    //console.log("deltas", deltas);
 
-    if(deltas.length == 2 && deltas[1] - deltas[0] < avatarSize)
+    if(deltas.length == 2 && deltas[1] - deltas[0] < this.avatarSize)
       return deltas[1];
     
     var delta = null;
     deltas.forEach(function (d) {
       if(!delta || Math.abs(d) < delta) delta = d;
     });
-    console.log("delta", delta);
+    //console.log("delta", delta);
     return delta;
   }
 
@@ -193,17 +193,18 @@ module.exports = class LocalAvatar {
       const hShift = direction.clone().multiplyScalar(length);
       //console.log("hShift", hShift);
       const hShiftedOrigin = origin.clone().add(hShift);
-      const groundDelta = this.groundElevationDelta(tilesManager, hShiftedOrigin);
+      const acceptableDelta = this.acceptableSlope*length;
+      //console.log("acceptableDelta", acceptableDelta);
+      const groundDelta = this.groundElevationDelta(tilesManager, hShiftedOrigin, acceptableDelta);
 
-      const navelZ = 0.5;
       const navelOrigin = origin.clone();
-      navelOrigin.z += navelZ;
+      navelOrigin.z += this.navelZ;
 
       //In absence of surface, just cancel movement (except if already flying).
       if(groundDelta == null)
       {
         const intersection = this.buildingsHit(tilesManager, navelOrigin, new Shared.THREE.Vector3(0, 0, -1));
-        console.log("flying intersection", intersection);
+        //console.log("flying intersection", intersection);
         if(intersection != null) return;
       }
 
