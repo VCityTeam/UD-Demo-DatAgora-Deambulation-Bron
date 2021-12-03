@@ -17,7 +17,7 @@ module.exports = class Focus {
       new Shared.THREE.Euler(-this.conf.cameraAngle, 0, 0)
     );
 
-    //initial distance of the camera with the subject
+    //initial distance of the camera with the go2Focus
     this.distance = this.conf.minDist;
 
     //raycaster for picking/warp of avatar
@@ -44,12 +44,26 @@ module.exports = class Focus {
     this.c.dispose();
   }
   init() {
-    //const localCtx = arguments[1];
-    const gV = arguments[1].getGameView();
+    const thisFocus = this;
+
+    const localContext = arguments[1];
+    const gV = localContext.getGameView();
+    const inputManager = gV.getInputManager();
+    inputManager.addMouseInput(gV.html(), 'wheel', function (event) {
+      thisFocus.distance += event.wheelDelta * 0.1;
+      thisFocus.distance = Math.max(
+        Math.min(thisFocus.distance, thisFocus.conf.maxDist),
+        thisFocus.conf.minDist
+      );
+      gV.computeNearFarCamera();
+    });
+
+
+
+    //The following (click warping and itowns/Three cameras swapping) is currently broken. 
+    /*
     const iView = gV.getItownsView();
     const iCamera = iView.camera.camera3D;
-
-    const inputManager = gV.getInputManager();
     const tilesManager = gV.getLayerManager().tilesManagers;
 
     //TODO: do this at loads/unloads objects with events watchers instead of every tick
@@ -72,7 +86,7 @@ module.exports = class Focus {
       });
     };
 
-    const thisFocus = this;
+    
     inputManager.addKeyInput('c', 'keydown', function () {
       //debugger
       thisFocus.swapCameraMode(iView);
@@ -99,6 +113,7 @@ module.exports = class Focus {
       if(intersects.length > 0)
         avatar.setPosition(intersects[0].point.sub( gV.getObject3D().position));
     });
+    */
   }
 
   tick() {
@@ -111,11 +126,13 @@ module.exports = class Focus {
     //a context containing all data to script clientside script
     const localContext = arguments[1];
 
-    //get the subject gameobject by name
-    const subject = go.computeRoot().findByName(this.conf.nameGO2Focus);
+    //get the go2Focus gameobject by name
+    const go2Focus = go.computeRoot().findByName(this.conf.nameGO2Focus);
+
+    if (!go2Focus) return;
 
     //compute world transform
-    const obj = subject.computeObject3D();
+    const obj = go2Focus.computeObject3D();
     let position = new Shared.THREE.Vector3();
     let quaternion = new Shared.THREE.Quaternion();
     obj.matrixWorld.decompose(position, quaternion, new Shared.THREE.Vector3());
@@ -124,7 +141,7 @@ module.exports = class Focus {
     position.z += this.conf.offsetZ;
 
     //compute camera position
-    const dir = subject
+    const dir = go2Focus
       .getDefaultForward()
       .applyQuaternion(this.quaternionAngle)
       .applyQuaternion(quaternion);
@@ -134,9 +151,11 @@ module.exports = class Focus {
     quaternion.multiply(this.quaternionAngle);
 
     //tweak values in camera object
-    const iV = localContext.getGameView().getItownsView();
-    iV.camera.camera3D.position.copy(position);
-    iV.camera.camera3D.quaternion.copy(quaternion);
-    iV.camera.camera3D.updateProjectionMatrix();
+    const camera = localContext.getGameView().getCamera();
+    camera.position.copy(position);
+    camera.quaternion.copy(quaternion);
+    camera.updateProjectionMatrix();
+
+    localContext.getGameView().computeNearFarCamera();
   }
 };

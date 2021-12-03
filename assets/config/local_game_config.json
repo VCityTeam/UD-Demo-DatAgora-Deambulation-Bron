@@ -1,6 +1,6 @@
 {
   "assetsManager": {
-    "models": {
+    "renderData": {
       "avatar": {
         "path": "./assets/models/avatar_capuchon.glb",
         "anchor": "center_min"
@@ -9,20 +9,16 @@
         "path_": "./assets/models/BRON_Nov_15.glb",
         "path__": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/exportShifted_BRON_Nov_17.glb",
         "path_good": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/simpler.glb",
-        "path": "./assets/obj_tilesets/BRON_Dec_01_final.glb",
+        "path": "./assets/obj_tilesets/BRON_FINAL_tweaked.glb",
         "path_gizmo": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb.glb",
         "path_gizmo2": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb_Yup.glb",
-        "static": true
+        "static": true,
+        "rotation_": {"x": 0, "y": 1.5707, "z": 0}
       },
       "campus_raw": {
         "path": "./assets/models/Bron_raw.glb",
         "anchor": "min",
         "static": true
-      }
-    },
-    "worldScripts": {
-      "avatar": {
-        "path": "./assets/worldScripts/avatar.js"
       }
     },
     "localScripts": {
@@ -37,13 +33,18 @@
   "game": {
     "fps": 30,
     "shadowMapSize": 2046,
-    "skyColor": {
-      "r": 0.4,
-      "g": 0.6,
-      "b": 0.8
-    },
+    "radiusExtent": 10000,
     "sky": {
-      "path": "./assets/img/sky.jpg"
+      "path": "./assets/img/sky.jpg",
+      "color": {
+        "r": 0.4,
+        "g": 0.6,
+        "b": 0.8
+      },
+      "sun_position": {
+        "phi": 1,
+        "theta": 0.3
+      }
     }
   },
   "itowns": {
@@ -54,8 +55,24 @@
       "tilt": 10
     }
   },
-  "3DTilesLayers": [
-
+  "3DTilesLayers": [],
+  "3DTilesLayers_backup": [
+    {
+      "id": "3d-tiles-layer-building-Bron",
+      "url": "./assets/Bron_2018/tileset.json",
+      "color": "0xFFFFFF"
+    },
+    {
+      "id": "3d-tiles-layer-building-Saint_Priest",
+      "url": "./assets/Saint_Priest_2018/tileset.json",
+      "color": "0xFFFFFF"
+    },
+    {
+      "id": "3d-tiles-layer-relief-Bron",
+      "url_Lyon": "./assets/3DTiles/relief/tileset.json",
+      "url": "./assets/Bron_relief/tileset.json",
+      "color": "0xd0ac7f"
+    }
   ],
   "projection": "EPSG:3946"
 }
