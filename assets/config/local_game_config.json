@@ -5,6 +5,9 @@
         "path": "./assets/models/avatar_capuchon.glb",
         "anchor": "center_min"
       },
+      "map": {
+        "path": "./assets/models/map.glb"
+      },
       "campus_Yael": {
         "path_": "./assets/models/BRON_Nov_15.glb",
         "path__": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/exportShifted_BRON_Nov_17.glb",

@@ -18,6 +18,30 @@ module.exports = class LocalAvatar {
     this.debugIntersection = false;
     this.inputManager = null;
     this.campus = null;
+    this.map = null;
+    this.mapsIdsCoordinates = [
+      {
+        "id":"Mark_BuildingA",
+        "coordinates": new Shared.THREE.Vector3(5537.449588712847, -3265.356191088625, -109.39584916667938)
+      },
+      {
+        "id":"Mark_BuildingN",
+        "coordinates": new Shared.THREE.Vector3(5686.848128705462, -3549.7381362048473, -109.13350603232911)
+      },
+      {
+        "id":"Mark_StudentHome",
+        "coordinates": new Shared.THREE.Vector3(5774.157292781828, -3569.0877146511893, -105.76962835709135)
+      },
+      {
+        "id":"Mark_Restaurant",
+        "coordinates": new Shared.THREE.Vector3(5758.669726618163, -3519.4069644746364, -105.80908654132688)
+      },
+      {
+        "id":"Mark_BuildingH",
+        "coordinates": new Shared.THREE.Vector3(5699.6274396647, -3426.4343528145305, -104.00858011720136)
+      },
+    ];
+    this.mapsDistanceThreshold = 3.;
 
     //raycaster for avoiding buildings collisions with avatar
     this.raycaster = new Shared.THREE.Raycaster();
@@ -110,6 +134,23 @@ module.exports = class LocalAvatar {
     return delta;
   }
 
+  checkForNearbyMap() {
+    const position = this.localAvatar.position;
+    const mapO3D = this.map.object3D;
+    var mapNearby = false;
+    this.mapsIdsCoordinates.forEach(function (mapIdCoordinates) {
+      const id = mapIdCoordinates.id;
+      const p = mapIdCoordinates.coordinates;
+      const o3D = this.map.object3D.getObjectByName(id);
+      if(p.distanceTo(position) < this.mapsDistanceThreshold) {
+        mapNearby = true;
+        o3D.visible = true;
+      }
+      else o3D.visible = false;
+    }.bind(this));
+    this.map.object3D.visible = mapNearby;
+  }
+
   init() {
     const avatar = arguments[0].computeRoot().findByName('avatar');
     this.avatar = avatar;
@@ -143,7 +184,8 @@ module.exports = class LocalAvatar {
     this.intersectionCube = new Shared.THREE.Mesh( geometry, material );
     scene.add( this.intersectionCube );
 
-    console.log(scene);
+    //console.log(this.localAvatar);
+    //console.log(scene);
 
     //referential debug gizmo
     if(this.debugGizmo) {
@@ -177,11 +219,16 @@ module.exports = class LocalAvatar {
 
 
     this.campus = gV.assetsManager.createRenderData('campus_Yael').object;
-    console.log(this.campus);
+    //console.log(this.campus);
     this.campus.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -0.5*Math.PI); //here or manually on -y axis in rotation parameter of local_game_config.json
     this.campus.position.set(1849223.44, 5170874.5625, 194.8617); //not currently possible in local_game_config.json
-    console.log("campus", this.campus);
+    //console.log("campus", this.campus);
     scene.add(this.campus);
+
+    //Campus map is initilized as invisible.
+    this.map = arguments[0].computeRoot().findByName('map');
+    //console.log(this.map);
+    this.map.object3D.visible = false;
 
     const dt = localContext.getDt();
     const translationLength = this.translationSpeed * dt;
@@ -234,6 +281,7 @@ module.exports = class LocalAvatar {
       
       //Apply movement.
       this.avatar.move(shift);
+      this.checkForNearbyMap();
     }.bind(this);
 
     
@@ -260,6 +308,12 @@ module.exports = class LocalAvatar {
       const dt = localContext.getDt();
       avatar.rotate(new Shared.THREE.Vector3(0, 0, -rotationAngle));
       //console.log('d');
+    });
+
+    //Print position.
+    inputManager.addKeyCommand('rotate_right', ['p'], function () {
+      console.log("game coordinates: ", localAvatar.position);
+      console.log("absolute coordinates: ", localAvatar.position.clone().add(worldOrigin));
     });
 
     //tick command

@@ -25,6 +25,15 @@ const myWorld = new udv.Game.Shared.World({
         components: {
           Render: { idRenderData: 'avatar' },
         },
+        children: [
+          {
+            name: 'map',
+            noLocalUpdate: true,
+            components: {
+              Render: { idRenderData: 'map' },
+            },
+          },
+        ]
       },
     ],
   },
