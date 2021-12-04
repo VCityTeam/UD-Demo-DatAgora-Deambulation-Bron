@@ -50,6 +50,9 @@ module.exports = class LocalAvatar {
     this.acceptableSlope = 0.7;
     this.avatarSize = 1.7;
     this.navelZ = 0.85;
+
+    this.traceSecondsInterval = 0.1;
+    this.trace = [];
   }
 
   addTileLayerToArray(array, tilesManager, layerName) {
@@ -149,6 +152,19 @@ module.exports = class LocalAvatar {
       else o3D.visible = false;
     }.bind(this));
     this.map.object3D.visible = mapNearby;
+  }
+
+  traceMovement() {
+    //Trace position.
+    const time = Date.now();
+    if(this.trace.length == 0 || (time - this.trace[this.trace.length - 1].time) > this.traceSecondsInterval * 1000)
+    this.trace.push({
+      "time": time,
+      "matrix": this.localAvatar.matrix
+    });
+    //console.log(time/1000 % 100);
+    //console.log(this.trace.length);
+    //console.log(this.localAvatar);
   }
 
   init() {
@@ -281,7 +297,12 @@ module.exports = class LocalAvatar {
       
       //Apply movement.
       this.avatar.move(shift);
+
+      //Show map if needed.
       this.checkForNearbyMap();
+
+      //Trace position.
+      this.traceMovement();
     }.bind(this);
 
     
@@ -302,13 +323,15 @@ module.exports = class LocalAvatar {
       const dt = localContext.getDt();
       avatar.rotate(new Shared.THREE.Vector3(0, 0, rotationAngle));
       //console.log('q');
-    });
+      this.traceMovement();
+    }.bind(this));
     //RIGHT
     inputManager.addKeyCommand('rotate_right', ['d'], function () {
       const dt = localContext.getDt();
       avatar.rotate(new Shared.THREE.Vector3(0, 0, -rotationAngle));
       //console.log('d');
-    });
+      this.traceMovement();
+    }.bind(this));
 
     //Print position.
     inputManager.addKeyCommand('rotate_right', ['p'], function () {
@@ -322,10 +345,28 @@ module.exports = class LocalAvatar {
     });
 
     //warp to saved location
+    const trace = this.trace;
     inputManager.addKeyInput('m', 'keydown', function () {
       localAvatar.position.set(5522.95180710312, -3322.608827644959, -110.02345057404978);
       //console.log("saved position: ", localAvatar.position.add(worldOrigin));
       localAvatar.updateMatrixWorld();
+      trace.length = 0;
+    });
+
+    //save trace.
+    function download(content, fileName, contentType) {
+      var a = document.createElement("a");
+      var file = new Blob([content], {type: contentType});
+      a.href = URL.createObjectURL(file);
+      a.download = fileName;
+      a.click();
+    }
+    inputManager.addKeyInput('t', 'keydown', function () {
+      //console.log(Date.now());
+      //const dateString = new Date().toLocaleString("fr-FR");
+      const dateString = Date.now();
+      //console.log(dateString);
+      download(JSON.stringify(trace), 'trace-' + dateString + '.txt', 'text/plain');
     });
   }
 
