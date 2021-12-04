@@ -106,6 +106,8 @@ module.exports = class LocalAvatar {
       },
     ];
     this.currentObjective = 0;
+    this.objectivesDelay = null;
+    //this.objectivesDelay = 3;
 
     this.warped = false;
   }
@@ -248,6 +250,14 @@ module.exports = class LocalAvatar {
     const objective = this.objectives[this.currentObjective];
     const threshold = (objective.distanceThreshold ? objective.distanceThreshold : 1);
     if(objective.coordinates.distanceTo(position) < threshold) {
+
+      //Validate objective only after given delay without moving.
+      if(this.objectivesDelay)
+      {
+        const elapsedTime = (Date.now() - this.trace[this.trace.length - 1].time)/1000;
+        if(elapsedTime < this.objectivesDelay) return;
+      }
+
       console.log("Objective '" + objective.id + "' reached!");
       this.currentObjective++;
 
@@ -384,7 +394,7 @@ module.exports = class LocalAvatar {
       //Trace position.
       this.traceMovement();
 
-      //Check for objective completion.
+      //Check for objective completion
       this.checkForNearbyObjective();
     }.bind(this);
 
@@ -456,5 +466,7 @@ module.exports = class LocalAvatar {
     }.bind(this));
   }
 
-  tick() {}
+  tick() {
+    if(this.objectivesDelay) this.checkForNearbyObjective();
+  }
 };
