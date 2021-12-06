@@ -48,7 +48,7 @@ module.exports = class LocalAvatar {
     //this.translationSpeed = 0.03;
     this.translationSpeed = 0.01;
     this.rotationSpeed = 0.0012;
-    this.acceptableSlope = 0.7;
+    this.acceptableSlope = 2;
     this.avatarSize = 1.7;
     this.navelZ = 0.85;
 
@@ -59,7 +59,7 @@ module.exports = class LocalAvatar {
       {
         "id":"cafet'U",
         "coordinates": new Shared.THREE.Vector3(5567.575164457585, -3256.6427702494893, -108.00143772201538),
-        "distanceThreshold": 2
+        "distanceThreshold": 3
       },
       {
         "id":"amphi F1",
@@ -78,12 +78,13 @@ module.exports = class LocalAvatar {
       {
         "id":"resto'U",
         "coordinates": new Shared.THREE.Vector3(5748.186775903313, -3521.249842989633, -106.90629936294067),
-        "distanceThreshold": 2
+        "distanceThreshold": 3
       },
       {
         "id":"café Filtre",
-        "coordinates": new Shared.THREE.Vector3(5782.290437117068, -3560.5980054803413, -106.42284282285995),
-        "distanceThreshold": 2
+        "coordinates": new Shared.THREE.Vector3(5782.290437117068, -3560.5980054803413, -106.42284282285995), //under sign
+        //"coordinates": new Shared.THREE.Vector3(5776.28054124889, -3550.760785986715, -106.47230198544284), //in front of the "real" door
+        "distanceThreshold": 5
       },
       {
         "id":"Kiosque",
@@ -97,17 +98,17 @@ module.exports = class LocalAvatar {
       {
         "id":"bâtiment B",
         "coordinates": new Shared.THREE.Vector3(5617.592245786231, -3248.1625083272656, -105.3557973487854),
-        "distanceThreshold": 2
+        "distanceThreshold": 3
       },
       {
         "id":"forum",
         "coordinates": new Shared.THREE.Vector3(5638.039973720276, -3320.6375219867145, -105.32150721865845),
-        "distanceThreshold": 7
+        "distanceThreshold": 20
       },
     ];
     this.currentObjective = 0;
     this.objectivesDelay = null;
-    //this.objectivesDelay = 3;
+    //this.objectivesDelay = 3; //in seconds
 
     this.warped = false;
   }
@@ -331,6 +332,7 @@ module.exports = class LocalAvatar {
     //Label div to print infos on objectives.
     this.label = document.createElement('div');
     localContext.getGameView().appendToUI(this.label);
+    this.label.style.fontSize = "x-large";
     this.updateLabel();
 
 
