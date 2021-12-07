@@ -8,8 +8,8 @@
       "map": {
         "path": "assets/models/map.glb"
       },
-      "campus_Yael": {
-        "path": "assets/models/BRON_FINAL_tweaked.glb",
+      "campus": {
+        "path": "assets/models/campus.glb",
         "static": true,
         "rotation_": {"x": 0, "y": 1.5707, "z": 0}
       }

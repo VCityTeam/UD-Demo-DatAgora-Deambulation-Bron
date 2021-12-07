@@ -317,7 +317,7 @@ module.exports = class LocalAvatar {
 
 
     //Manual instanciation of campus.
-    this.campus = gV.assetsManager.createRenderData('campus_Yael').object;
+    this.campus = gV.assetsManager.createRenderData('campus').object;
     //console.log(this.campus);
     this.campus.rotateOnAxis(new Shared.THREE.Vector3(0, 0, 1), -0.5*Math.PI); //here or manually on -y axis in rotation parameter of local_game_config.json
     this.campus.position.set(1849223.44, 5170874.5625, 194.8617); //not currently possible in local_game_config.json
