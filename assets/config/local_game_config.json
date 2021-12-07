@@ -2,34 +2,24 @@
   "assetsManager": {
     "renderData": {
       "avatar": {
-        "path": "./assets/models/avatar_capuchon.glb",
+        "path": "assets/models/avatar_capuchon.glb",
         "anchor": "center_min"
       },
       "map": {
-        "path": "./assets/models/map.glb"
+        "path": "assets/models/map.glb"
       },
       "campus_Yael": {
-        "path_": "./assets/models/BRON_Nov_15.glb",
-        "path__": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/exportShifted_BRON_Nov_17.glb",
-        "path_good": "./assets/obj_tilesets/third_try_with_swap/export_shiftedLocal/simpler.glb",
-        "path": "./assets/obj_tilesets/BRON_FINAL_tweaked.glb",
-        "path_gizmo": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb.glb",
-        "path_gizmo2": "./assets/obj_tilesets/third_try_with_swap/xyz_rgb_Yup.glb",
+        "path": "assets/models/BRON_FINAL_tweaked.glb",
         "static": true,
         "rotation_": {"x": 0, "y": 1.5707, "z": 0}
-      },
-      "campus_raw": {
-        "path": "./assets/models/Bron_raw.glb",
-        "anchor": "min",
-        "static": true
       }
     },
     "localScripts": {
       "focus": {
-        "path": "./assets/localScripts/focus.js"
+        "path": "assets/localScripts/focus.js"
       },
       "localAvatar": {
-        "path": "./assets/localScripts/avatar.js"
+        "path": "assets/localScripts/avatar.js"
       }
     }
   },
@@ -38,7 +28,7 @@
     "shadowMapSize": 2046,
     "radiusExtent": 10000,
     "sky": {
-      "path": "./assets/img/sky.jpg",
+      "path": "assets/img/sky.jpg",
       "color": {
         "r": 0.4,
         "g": 0.6,
