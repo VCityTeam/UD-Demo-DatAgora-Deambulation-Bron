@@ -4,7 +4,6 @@
   "description": "udv game editor",
   "main": "./src/bootstrap.js",
   "scripts": {
-    "travis": "npm run eslint && npm run build",
     "eslint": "./node_modules/.bin/eslint ./src",
     "eslint-fix": "./node_modules/.bin/eslint ./src --fix",
     "build": "cross-env NODE_ENV=production webpack",
@@ -17,7 +16,7 @@
     "@egjs/hammerjs": "^2.0.17",
     "keycharm": "^0.4.0",
     "timsort": "^0.3.0",
-    "ud-viz": "file:/../UD-Viz",
+    "ud-viz": "git+https://github.com/VCityTeam/UD-Viz.git#10fa18b25ca68bdbe5e307bdb26ac4c45d535ecc",
     "uuid": "^8.3.2",
     "vis-util": "^5.0.2"
   },

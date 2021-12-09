@@ -49,23 +49,5 @@
     }
   },
   "3DTilesLayers": [],
-  "3DTilesLayers_backup": [
-    {
-      "id": "3d-tiles-layer-building-Bron",
-      "url": "./assets/Bron_2018/tileset.json",
-      "color": "0xFFFFFF"
-    },
-    {
-      "id": "3d-tiles-layer-building-Saint_Priest",
-      "url": "./assets/Saint_Priest_2018/tileset.json",
-      "color": "0xFFFFFF"
-    },
-    {
-      "id": "3d-tiles-layer-relief-Bron",
-      "url_Lyon": "./assets/3DTiles/relief/tileset.json",
-      "url": "./assets/Bron_relief/tileset.json",
-      "color": "0xd0ac7f"
-    }
-  ],
   "projection": "EPSG:3946"
 }
