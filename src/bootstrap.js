@@ -33,7 +33,14 @@ const myWorld = new udv.Game.Shared.World({
               Render: { idRenderData: 'map' },
             },
           },
-        ]
+        ],
+      },
+      {
+        name: 'campus',
+        noLocalUpdate: true,
+        components: {
+          Render: { idRenderData: 'campus' },
+        },
       },
     ],
   },
@@ -270,7 +277,10 @@ app.start(myWorld, './assets/config/local_game_config.json').then(function () {
   const camera = gameView.getCamera();
   const renderer = gameView.getRenderer();
 
-  const edgeDetectionComposer = new udv.EffectComposer(renderer, renderTargetFX);
+  const edgeDetectionComposer = new udv.EffectComposer(
+    renderer,
+    renderTargetFX
+  );
   const normalsPass = new udv.RenderPass(scene, camera, MYMAT);
   edgeDetectionComposer.addPass(normalsPass);
   const sobelPass = new udv.ShaderPass(MySobelOperatorShader);

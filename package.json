@@ -2,7 +2,7 @@
   "name": "app_name",
   "version": "1.0.0",
   "description": "udv game editor",
-  "main": "./src/bootstrap.js",
+  "main": "main.js",
   "scripts": {
     "eslint": "./node_modules/.bin/eslint ./src",
     "eslint-fix": "./node_modules/.bin/eslint ./src --fix",
@@ -24,6 +24,7 @@
     "child-process-promise": "^2.2.1",
     "cross-env": "^7.0.3",
     "css-loader": "^0.28.10",
+    "electron": "^16.0.8",
     "eslint": "^7.28.0",
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^4.5.2",

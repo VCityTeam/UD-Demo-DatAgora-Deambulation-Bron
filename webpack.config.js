@@ -57,7 +57,7 @@ module.exports = (env) => {
       rules: rules,
     },
     devServer: {
-      port: 8000,
+      port: 8008,
       hot: true,
     },
     plugins: plugins,

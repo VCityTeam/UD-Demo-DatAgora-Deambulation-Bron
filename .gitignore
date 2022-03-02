@@ -8,3 +8,5 @@ TODO.txt
 .vs
 .vscode
 Test/**
+**/models
+**/img
