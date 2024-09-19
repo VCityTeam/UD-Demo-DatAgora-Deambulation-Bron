@@ -4,7 +4,7 @@ This repository holds the source code of a web demonstration using the UD-Viz fr
 The university campus of *Porte des Alpes* situated in the town of Bron (near Lyon, in France) has been reproduced in a digital mockup.
 
 This web demonstration put you in control of an avatar wandering in the digital mockup, and following a fictive student schedule.
-You can find a live version of the demonstration at URL https://deambulation-bron.vcityliris.data.alpha.grandlyon.com/.
+You can find a live version of the demonstration at URL [https://projet.liris.cnrs.fr/vcity/permalink/demo-deambulation-bron.html](https://projet.liris.cnrs.fr/vcity/permalink/demo-deambulation-bron.html).
 
 ![](capture.png)
 
